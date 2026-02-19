@@ -419,8 +419,11 @@
     </div>
   </div>
 
-  <section class="form-section">
+<section class="form-section">
     <div class="form-card">
+
+      <!-- Add CSRF token meta tag if not already in head -->
+      <meta name="csrf-token" content="{{ csrf_token() }}">
 
       <div id="formContent">
         <div class="form-title">Join the Waitlist</div>
@@ -446,31 +449,59 @@
               <label for="score">JAMB Score Range <span class="opt">(optional)</span></label>
               <select id="score">
                 <option value="">Select range</option>
-                <option>Below 180</option>
-                <option>180 – 199</option>
-                <option>200 – 219</option>
-                <option>220 – 249</option>
-                <option>250 and above</option>
+                <option value="Below 180">Below 180</option>
+                <option value="180 – 199">180 – 199</option>
+                <option value="200 – 219">200 – 219</option>
+                <option value="220 – 249">220 – 249</option>
+                <option value="250 and above">250 and above</option>
               </select>
             </div>
             <div>
-              <label for="state">State of Origin <span class="opt">(optional)</span></label>
-              <select id="state">
-                <option value="">Select state</option>
-                <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
-                <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
-                <option>Benue</option><option>Borno</option><option>Cross River</option>
-                <option>Delta</option><option>Ebonyi</option><option>Edo</option>
-                <option>Ekiti</option><option>Enugu</option><option>FCT – Abuja</option>
-                <option>Gombe</option><option>Imo</option><option>Jigawa</option>
-                <option>Kaduna</option><option>Kano</option><option>Katsina</option>
-                <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
-                <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
-                <option>Ogun</option><option>Ondo</option><option>Osun</option>
-                <option>Oyo</option><option>Plateau</option><option>Rivers</option>
-                <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
-                <option>Zamfara</option>
-              </select>
+            
+    <div>
+        <label for="state">State of Origin <span class="opt">(optional)</span></label>
+        <select id="state">
+            <option value="">Select state</option>
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="Akwa Ibom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+            <option value="FCT">FCT – Abuja</option>
+        </select>
+    </div>
+</div>
             </div>
           </div>
 
@@ -479,33 +510,42 @@
               <label for="course">Preferred Course <span class="opt">(optional)</span></label>
               <select id="course">
                 <option value="">Select course</option>
-                <option>Medicine & Surgery</option>
-                <option>Law</option>
-                <option>Engineering</option>
-                <option>Nursing</option>
-                <option>Pharmacy</option>
-                <option>Accounting</option>
-                <option>Computer Science</option>
-                <option>Economics</option>
-                <option>Mass Communication</option>
-                <option>Architecture</option>
-                <option>Medical Laboratory Science</option>
-                <option>Biochemistry</option>
-                <option>Microbiology</option>
-                <option>Education</option>
-                <option>Business Administration</option>
-                <option>Other</option>
+                <option value="Medicine & Surgery">Medicine & Surgery</option>
+                <option value="Law">Law</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Nursing">Nursing</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Accounting">Accounting</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Economics">Economics</option>
+                <option value="Mass Communication">Mass Communication</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Medical Laboratory Science">Medical Laboratory Science</option>
+                <option value="Biochemistry">Biochemistry</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Education">Education</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
 
-          <button type="submit" class="submit-btn">Get Early Access →</button>
+          <!-- Loading indicator -->
+          <div id="loadingIndicator" style="display: none; text-align: center; margin: 15px 0;">
+            <div class="spinner"></div>
+            <p style="color: #666; font-size: 14px;">Processing...</p>
+          </div>
+
+          <!-- Error message container -->
+          <div id="errorContainer" style="display: none; background: #fee; color: #c00; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; text-align: center;"></div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Get Early Access →</button>
         </form>
 
         <p class="privacy-note">🔒 No spam. No sharing. We only use this to build JambChance for you.</p>
       </div>
 
-      <div class="success-state" id="successState">
+      <div class="success-state" id="successState" style="display: none;">
         <div class="success-icon">✓</div>
         <h3>You're on the list!</h3>
         <p>We'll notify you the moment JambChance launches.<br/>Share with a friend who also needs this.</p>
@@ -514,6 +554,173 @@
 
     </div>
   </section>
+
+  <!-- Add spinner styles -->
+  <style>
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
+
+  <script>
+    async function handleSubmit(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const name = document.getElementById('fname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const score = document.getElementById('score').value;
+      const state = document.getElementById('state').value;
+      const course = document.getElementById('course').value;
+      
+      // Validate required fields
+      if (!name) { 
+        showError('Please enter your full name.'); 
+        return; 
+      }
+      
+      if (!email || !email.includes('@') || !email.includes('.')) { 
+        showError('Please enter a valid email address.'); 
+        return; 
+      }
+      
+      // Show loading state
+      const submitBtn = document.getElementById('submitBtn');
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const errorContainer = document.getElementById('errorContainer');
+      
+      submitBtn.disabled = true;
+      loadingIndicator.style.display = 'block';
+      errorContainer.style.display = 'none';
+      
+      try {
+        // Get CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        
+        if (!csrfToken) {
+          throw new Error('CSRF token not found. Please refresh the page.');
+        }
+        
+        // Prepare data for submission
+        const formData = {
+          full_name: name,
+          email: email,
+          jamb_score_range: score || null,
+          state_of_origin: state || null,
+          preferred_course: course || null,
+          other_course: course === 'Other' ? prompt('Please specify your course:') : null
+        };
+        
+        // Send data to Laravel backend
+        const response = await fetch('/waitlist/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          // Success - show success state
+          console.log('Successfully joined waitlist:', data);
+          
+          // Hide form, show success
+          document.getElementById('formContent').style.display = 'none';
+          document.getElementById('successState').style.display = 'block';
+          
+          // Optional: Send to Google Analytics or tracking
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'waitlist_signup', {
+              'event_category': 'engagement',
+              'event_label': course || 'unknown'
+            });
+          }
+          
+        } else {
+          // Handle validation errors
+          if (data.errors) {
+            const errorMessages = Object.values(data.errors).flat().join(', ');
+            showError(errorMessages || 'Validation failed. Please check your inputs.');
+          } else {
+            showError(data.message || 'Something went wrong. Please try again.');
+          }
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        showError('Network error. Please check your connection and try again.');
+      } finally {
+        // Hide loading state
+        submitBtn.disabled = false;
+        loadingIndicator.style.display = 'none';
+      }
+    }
+    
+    function showError(message) {
+      const errorContainer = document.getElementById('errorContainer');
+      errorContainer.textContent = message;
+      errorContainer.style.display = 'block';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        errorContainer.style.display = 'none';
+      }, 5000);
+    }
+    
+    function shareLink() {
+      const text = 'Check your real JAMB admission chances before you apply! JambChance is launching soon 🎯';
+      if (navigator.share) {
+        navigator.share({ 
+          title: 'JambChance', 
+          text: text, 
+          url: window.location.href 
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => alert('Link copied! Share it with your friends.'))
+          .catch(() => alert('Could not copy link. Please copy manually.'));
+      }
+    }
+    
+    // Optional: Add real-time email validation
+    document.getElementById('email').addEventListener('blur', async function() {
+      const email = this.value.trim();
+      if (email && email.includes('@') && email.includes('.')) {
+        try {
+          const response = await fetch(`/waitlist/check-email?email=${encodeURIComponent(email)}`);
+          const data = await response.json();
+          
+          if (data.exists) {
+            showError('This email is already on our waitlist. Thank you!');
+          }
+        } catch (error) {
+          // Silently fail - don't bother user
+        }
+      }
+    });
+    
+    // Optional: Add loading state to button text
+    const originalButtonText = document.querySelector('.submit-btn').textContent;
+  </script>
 
   <div class="social-proof">
     <div class="proof-item"><div class="proof-dot"></div> Built for Nigerian Students</div>
@@ -525,33 +732,6 @@
     © 2025 JambChance · psalmedu.com · All rights reserved
   </footer>
 
-  <script>
-    function handleSubmit(e) {
-      e.preventDefault();
-      const name = document.getElementById('fname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      if (!name) { alert('Please enter your full name.'); return; }
-      if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
-      // Here you would send data to your backend / database
-      console.log('New signup:', { name, email,
-        score: document.getElementById('score').value,
-        state: document.getElementById('state').value,
-        course: document.getElementById('course').value
-      });
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('successState').style.display = 'block';
-    }
-
-    function shareLink() {
-      const text = 'Check your real JAMB admission chances before you apply! JambChance is launching soon 🎯';
-      if (navigator.share) {
-        navigator.share({ title: 'JambChance', text, url: window.location.href });
-      } else {
-        navigator.clipboard.writeText(window.location.href)
-          .then(() => alert('Link copied! Share it with your friends.'));
-      }
-    }
-  </script>
 
 </body>
 </html>
