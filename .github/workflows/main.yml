@@ -1,0 +1,38 @@
+name: 🚀 Apis on push
+
+on:
+  push:
+    branches:
+      - main  # Change to the branch you want to deploy from
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+
+    - name: 📂 Print current directory
+      run: pwd  # This prints the current working directory
+
+    - name: 📂 Deploy files via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: "ftp.psalmedu.com"  # Your FTP server
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: "./"  # Adjust to point to your project's public directory
+        server-dir: "/"  # Change to your appropriate server path
+        include: |  # Use include to specify files and directories to deploy
+          node_modules/
+          vendor/
+          storage/
+          tests/
+          *.md
+          .env
+          lost+found/
+
+    - name: 🚀 Post-Deployment
+      run: echo "Deployment complete!"
