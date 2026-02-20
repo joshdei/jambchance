@@ -430,7 +430,7 @@
         <div class="form-subtitle">Be first to know when JambChance launches. Takes 30 seconds.</div>
 
         {{-- <form id="waitlistForm" onsubmit="handleSubmit(event)" novalidate> --}}
-       <form id="waitlistForm" method="POST" action="actio.php" >
+       <form id="waitlistForm" method="POST" action="{{ route('waitlist.submit') }}" >
 
         @if($errors->any())
     <div id="errorContainer" style="display: block; background: #fee; color: #c00; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: left; border: 1px solid #fcc;">
@@ -440,7 +440,7 @@
             @endforeach
         </ul>
     </div>
-@endif  
+@endif
     @csrf
     <div class="field-group">
         <div>
