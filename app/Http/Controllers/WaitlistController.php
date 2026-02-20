@@ -22,73 +22,51 @@ class WaitlistController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            // Validate the request
-            $validator = Validator::make($request->all(), [
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255|unique:waitlists,email',
-                'jamb_score_range' => 'nullable|string|max:50',
-                'state_of_origin' => 'nullable|string|max:100',
-                'preferred_course' => 'nullable|string|max:255',
-                'other_course' => 'nullable|string|max:255'
-            ]);
+       dd($request->all());
+        // Validate input
+        $validator = Validator::make($request->all(), [
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:waitlists,email',
+            'jamb_score_range' => 'nullable|string|max:100',
+            'state_of_origin' => 'nullable|string|max:100',
+            'preferred_course' => 'nullable|string|max:100',
+            'other_course' => 'nullable|string|max:255'
+        ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            // Get device info
-            $deviceInfo = Waitlist::getDeviceInfo($request->userAgent());
-
-            // Prepare data for insertion
-            $data = [
-                'full_name' => $request->full_name,
-                'email' => $request->email,
-                'jamb_score_range' => $request->jamb_score_range,
-                'state_of_origin' => $request->state_of_origin,
-                'preferred_course' => $request->preferred_course,
-                'other_course' => $request->other_course,
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'session_id' => session()->getId(),
-                'referrer' => $request->headers->get('referer'),
-                'page_url' => $request->fullUrl(),
-                'browser' => $deviceInfo['browser'],
-                'os' => $deviceInfo['os'],
-                'device_type' => $deviceInfo['device_type'],
-                'is_mobile' => $deviceInfo['is_mobile'],
-                'is_tablet' => $deviceInfo['is_tablet'],
-                'is_desktop' => $deviceInfo['is_desktop']
-            ];
-
-            // Save to database
-            $waitlist = Waitlist::create($data);
-
-            // Log success
-            Log::info('New waitlist signup', [
-                'email' => $waitlist->email,
-                'id' => $waitlist->id
-            ]);
-
-            // Redirect to success page with data
-            return redirect()->route('waitlist.success', [
-                'name' => $waitlist->full_name,
-                'email' => $waitlist->email
-            ]);
-
-        } catch (\Exception $e) {
-            // Log error
-            Log::error('Waitlist signup failed', [
-                'error' => $e->getMessage(),
-                'email' => $request->email ?? 'unknown'
-            ]);
-
+        if ($validator->fails()) {
             return redirect()->back()
-                ->with('error', 'An error occurred. Please try again later.')
+                ->withErrors($validator)
                 ->withInput();
         }
+
+        // Get device info
+        $deviceInfo = Waitlist::getDeviceInfo($request->userAgent());
+
+        // Create waitlist entry
+        $waitlistEntry = Waitlist::create([
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'jamb_score_range' => $request->jamb_score_range,
+            'state_of_origin' => $request->state_of_origin,
+            'preferred_course' => $request->preferred_course,
+            'other_course' => $request->other_course,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'session_id' => session()->getId(),
+            'referrer' => $request->headers->get('referer'),
+            'page_url' => url()->current(),
+            'device_type' => $deviceInfo['device_type'],
+            'browser' => $deviceInfo['browser'],
+            'os' => $deviceInfo['os'],
+            'is_mobile' => $deviceInfo['is_mobile'],
+            'is_tablet' => $deviceInfo['is_tablet'],
+            'is_desktop' => $deviceInfo['is_desktop']
+        ]);
+
+        Log::info('New waitlist entry created', ['id' => $waitlistEntry->id, 'email' => $waitlistEntry->email]);
+
+        // Redirect to success page with name and email in query params
+        return redirect()->route('waitlist.success', ['name' => $waitlistEntry->full_name, 'email' => $waitlistEntry->email]);
     }
 
     /**
