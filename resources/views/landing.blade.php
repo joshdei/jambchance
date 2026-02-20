@@ -429,136 +429,119 @@
         <div class="form-title">Join the Waitlist</div>
         <div class="form-subtitle">Be first to know when JambChance launches. Takes 30 seconds.</div>
 
-        {{-- <form id="waitlistForm" onsubmit="handleSubmit(event)" novalidate> --}}
-       <form id="waitlistForm" method="POST" action="{{ route('waitlist.submit') }}" >
+        <form id="waitlistForm" onsubmit="handleSubmit(event)" novalidate>
 
-        @if($errors->any())
-    <div id="errorContainer" style="display: block; background: #fee; color: #c00; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: left; border: 1px solid #fcc;">
-        <ul style="margin: 0; padding-left: 20px;">
-            @foreach($errors->all() as $error)
-                <li style="margin-bottom: 5px;">{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-    @csrf
-    <div class="field-group">
-        <div>
-            <label for="fname">Full Name <span class="req">*</span></label>
-            <input type="text" id="fname" name="full_name" placeholder="e.g. Chukwuemeka Obi" value="{{ old('full_name') }}" required />
-        </div>
-        <div>
-            <label for="email">Email Address <span class="req">*</span></label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" value="{{ old('email') }}" required />
-        </div>
-    </div>
+          <div class="field-group">
+            <div>
+              <label for="fname">Full Name <span class="req">*</span></label>
+              <input type="text" id="fname" placeholder="e.g. Chukwuemeka Obi" required />
+            </div>
+            <div>
+              <label for="email">Email Address <span class="req">*</span></label>
+              <input type="email" id="email" placeholder="you@example.com" required />
+            </div>
+          </div>
 
-    <div class="divider">Optional — helps us build better for you</div>
+          <div class="divider">Optional — helps us build better for you</div>
 
-    <div class="field-group">
-        <div>
-            <label for="score">JAMB Score Range <span class="opt">(optional)</span></label>
-            <select id="score" name="jamb_score_range">
+          <div class="field-group">
+            <div>
+              <label for="score">JAMB Score Range <span class="opt">(optional)</span></label>
+              <select id="score">
                 <option value="">Select range</option>
-                <option value="Below 180" {{ old('jamb_score_range') == 'Below 180' ? 'selected' : '' }}>Below 180</option>
-                <option value="180 – 199" {{ old('jamb_score_range') == '180 – 199' ? 'selected' : '' }}>180 – 199</option>
-                <option value="200 – 219" {{ old('jamb_score_range') == '200 – 219' ? 'selected' : '' }}>200 – 219</option>
-                <option value="220 – 249" {{ old('jamb_score_range') == '220 – 249' ? 'selected' : '' }}>220 – 249</option>
-                <option value="250 and above" {{ old('jamb_score_range') == '250 and above' ? 'selected' : '' }}>250 and above</option>
-            </select>
-        </div>
-        <div>
-            <label for="state">State of Origin <span class="opt">(optional)</span></label>
-            <select id="state" name="state_of_origin">
-                <option value="">Select state</option>
-                <option value="Abia" {{ old('state_of_origin') == 'Abia' ? 'selected' : '' }}>Abia</option>
-                <option value="Adamawa" {{ old('state_of_origin') == 'Adamawa' ? 'selected' : '' }}>Adamawa</option>
-                <option value="Akwa Ibom" {{ old('state_of_origin') == 'Akwa Ibom' ? 'selected' : '' }}>Akwa Ibom</option>
-                <option value="Anambra" {{ old('state_of_origin') == 'Anambra' ? 'selected' : '' }}>Anambra</option>
-                <option value="Bauchi" {{ old('state_of_origin') == 'Bauchi' ? 'selected' : '' }}>Bauchi</option>
-                <option value="Bayelsa" {{ old('state_of_origin') == 'Bayelsa' ? 'selected' : '' }}>Bayelsa</option>
-                <option value="Benue" {{ old('state_of_origin') == 'Benue' ? 'selected' : '' }}>Benue</option>
-                <option value="Borno" {{ old('state_of_origin') == 'Borno' ? 'selected' : '' }}>Borno</option>
-                <option value="Cross River" {{ old('state_of_origin') == 'Cross River' ? 'selected' : '' }}>Cross River</option>
-                <option value="Delta" {{ old('state_of_origin') == 'Delta' ? 'selected' : '' }}>Delta</option>
-                <option value="Ebonyi" {{ old('state_of_origin') == 'Ebonyi' ? 'selected' : '' }}>Ebonyi</option>
-                <option value="Edo" {{ old('state_of_origin') == 'Edo' ? 'selected' : '' }}>Edo</option>
-                <option value="Ekiti" {{ old('state_of_origin') == 'Ekiti' ? 'selected' : '' }}>Ekiti</option>
-                <option value="Enugu" {{ old('state_of_origin') == 'Enugu' ? 'selected' : '' }}>Enugu</option>
-                <option value="Gombe" {{ old('state_of_origin') == 'Gombe' ? 'selected' : '' }}>Gombe</option>
-                <option value="Imo" {{ old('state_of_origin') == 'Imo' ? 'selected' : '' }}>Imo</option>
-                <option value="Jigawa" {{ old('state_of_origin') == 'Jigawa' ? 'selected' : '' }}>Jigawa</option>
-                <option value="Kaduna" {{ old('state_of_origin') == 'Kaduna' ? 'selected' : '' }}>Kaduna</option>
-                <option value="Kano" {{ old('state_of_origin') == 'Kano' ? 'selected' : '' }}>Kano</option>
-                <option value="Katsina" {{ old('state_of_origin') == 'Katsina' ? 'selected' : '' }}>Katsina</option>
-                <option value="Kebbi" {{ old('state_of_origin') == 'Kebbi' ? 'selected' : '' }}>Kebbi</option>
-                <option value="Kogi" {{ old('state_of_origin') == 'Kogi' ? 'selected' : '' }}>Kogi</option>
-                <option value="Kwara" {{ old('state_of_origin') == 'Kwara' ? 'selected' : '' }}>Kwara</option>
-                <option value="Lagos" {{ old('state_of_origin') == 'Lagos' ? 'selected' : '' }}>Lagos</option>
-                <option value="Nasarawa" {{ old('state_of_origin') == 'Nasarawa' ? 'selected' : '' }}>Nasarawa</option>
-                <option value="Niger" {{ old('state_of_origin') == 'Niger' ? 'selected' : '' }}>Niger</option>
-                <option value="Ogun" {{ old('state_of_origin') == 'Ogun' ? 'selected' : '' }}>Ogun</option>
-                <option value="Ondo" {{ old('state_of_origin') == 'Ondo' ? 'selected' : '' }}>Ondo</option>
-                <option value="Osun" {{ old('state_of_origin') == 'Osun' ? 'selected' : '' }}>Osun</option>
-                <option value="Oyo" {{ old('state_of_origin') == 'Oyo' ? 'selected' : '' }}>Oyo</option>
-                <option value="Plateau" {{ old('state_of_origin') == 'Plateau' ? 'selected' : '' }}>Plateau</option>
-                <option value="Rivers" {{ old('state_of_origin') == 'Rivers' ? 'selected' : '' }}>Rivers</option>
-                <option value="Sokoto" {{ old('state_of_origin') == 'Sokoto' ? 'selected' : '' }}>Sokoto</option>
-                <option value="Taraba" {{ old('state_of_origin') == 'Taraba' ? 'selected' : '' }}>Taraba</option>
-                <option value="Yobe" {{ old('state_of_origin') == 'Yobe' ? 'selected' : '' }}>Yobe</option>
-                <option value="Zamfara" {{ old('state_of_origin') == 'Zamfara' ? 'selected' : '' }}>Zamfara</option>
-                <option value="FCT" {{ old('state_of_origin') == 'FCT' ? 'selected' : '' }}>FCT – Abuja</option>
-            </select>
-        </div>
+                <option value="Below 180">Below 180</option>
+                <option value="180 – 199">180 – 199</option>
+                <option value="200 – 219">200 – 219</option>
+                <option value="220 – 249">220 – 249</option>
+                <option value="250 and above">250 and above</option>
+              </select>
+            </div>
+            <div>
+              <label for="state">State of Origin <span class="opt">(optional)</span></label>
+             <div class="field-group">
+    <div>
+        <label for="state">State of Origin <span class="opt">(optional)</span></label>
+        <select id="state">
+            <option value="">Select state</option>
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="Akwa Ibom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+            <option value="FCT">FCT – Abuja</option>
+        </select>
     </div>
+</div>
+            </div>
+          </div>
 
-    <div class="field-group full">
-        <div>
-            <label for="course">Preferred Course <span class="opt">(optional)</span></label>
-            <select id="course" name="preferred_course">
+          <div class="field-group full">
+            <div>
+              <label for="course">Preferred Course <span class="opt">(optional)</span></label>
+              <select id="course">
                 <option value="">Select course</option>
-                <option value="Medicine & Surgery" {{ old('preferred_course') == 'Medicine & Surgery' ? 'selected' : '' }}>Medicine & Surgery</option>
-                <option value="Law" {{ old('preferred_course') == 'Law' ? 'selected' : '' }}>Law</option>
-                <option value="Engineering" {{ old('preferred_course') == 'Engineering' ? 'selected' : '' }}>Engineering</option>
-                <option value="Nursing" {{ old('preferred_course') == 'Nursing' ? 'selected' : '' }}>Nursing</option>
-                <option value="Pharmacy" {{ old('preferred_course') == 'Pharmacy' ? 'selected' : '' }}>Pharmacy</option>
-                <option value="Accounting" {{ old('preferred_course') == 'Accounting' ? 'selected' : '' }}>Accounting</option>
-                <option value="Computer Science" {{ old('preferred_course') == 'Computer Science' ? 'selected' : '' }}>Computer Science</option>
-                <option value="Economics" {{ old('preferred_course') == 'Economics' ? 'selected' : '' }}>Economics</option>
-                <option value="Mass Communication" {{ old('preferred_course') == 'Mass Communication' ? 'selected' : '' }}>Mass Communication</option>
-                <option value="Architecture" {{ old('preferred_course') == 'Architecture' ? 'selected' : '' }}>Architecture</option>
-                <option value="Medical Laboratory Science" {{ old('preferred_course') == 'Medical Laboratory Science' ? 'selected' : '' }}>Medical Laboratory Science</option>
-                <option value="Biochemistry" {{ old('preferred_course') == 'Biochemistry' ? 'selected' : '' }}>Biochemistry</option>
-                <option value="Microbiology" {{ old('preferred_course') == 'Microbiology' ? 'selected' : '' }}>Microbiology</option>
-                <option value="Education" {{ old('preferred_course') == 'Education' ? 'selected' : '' }}>Education</option>
-                <option value="Business Administration" {{ old('preferred_course') == 'Business Administration' ? 'selected' : '' }}>Business Administration</option>
-                <option value="Other" {{ old('preferred_course') == 'Other' ? 'selected' : '' }}>Other</option>
-            </select>
-        </div>
-    </div>
+                <option value="Medicine & Surgery">Medicine & Surgery</option>
+                <option value="Law">Law</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Nursing">Nursing</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Accounting">Accounting</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Economics">Economics</option>
+                <option value="Mass Communication">Mass Communication</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Medical Laboratory Science">Medical Laboratory Science</option>
+                <option value="Biochemistry">Biochemistry</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Education">Education</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
 
-    <!-- Loading indicator -->
-    <div id="loadingIndicator" style="display: none; text-align: center; margin: 15px 0;">
-        <div class="spinner"></div>
-        <p style="color: #666; font-size: 14px;">Processing...</p>
-    </div>
+          <!-- Loading indicator -->
+          <div id="loadingIndicator" style="display: none; text-align: center; margin: 15px 0;">
+            <div class="spinner"></div>
+            <p style="color: #666; font-size: 14px;">Processing...</p>
+          </div>
 
-    <!-- Error message container -->
-    <div id="errorContainer" style="display: none; background: #fee; color: #c00; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; text-align: center;">
-        @if($errors->any())
-            {{ $errors->first() }}
-        @endif
-    </div>
+          <!-- Error message container -->
+          <div id="errorContainer" style="display: none; background: #fee; color: #c00; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; text-align: center;"></div>
 
-    <!-- Success message container -->
-    @if(session('success'))
-        <div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; text-align: center;">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <button type="submit" class="submit-btn" id="submitBtn">Get Early Access →</button>
-</form>
+          <button type="submit" class="submit-btn" id="submitBtn">Get Early Access →</button>
+        </form>
 
         <p class="privacy-note">🔒 No spam. No sharing. We only use this to build JambChance for you.</p>
       </div>
