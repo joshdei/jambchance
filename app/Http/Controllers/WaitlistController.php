@@ -22,7 +22,7 @@ class WaitlistController extends Controller
      */
     public function store(Request $request)
     {
-       dd($request->all());
+       
         // Validate input
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:255',
