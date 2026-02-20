@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Log;
 class WaitlistController extends Controller
 {
     /**
+     * Show the waitlist form (landing page)
+     */
+    public function index()
+    {
+        return view('landing');
+    }
+
+    /**
      * Store a new waitlist entry
      */
     public function store(Request $request)
@@ -26,11 +34,9 @@ class WaitlistController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validation error',
-                    'errors' => $validator->errors()
-                ], 422);
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
             }
 
             // Get device info
@@ -66,16 +72,11 @@ class WaitlistController extends Controller
                 'id' => $waitlist->id
             ]);
 
-            // Return success response
-            return response()->json([
-                'success' => true,
-                'message' => 'Successfully joined the waitlist!',
-                'data' => [
-                    'name' => $waitlist->full_name,
-                    'email' => $waitlist->email,
-                    'first_name' => $waitlist->first_name
-                ]
-            ], 201);
+            // Redirect to success page with data
+            return redirect()->route('waitlist.success', [
+                'name' => $waitlist->full_name,
+                'email' => $waitlist->email
+            ]);
 
         } catch (\Exception $e) {
             // Log error
@@ -84,78 +85,45 @@ class WaitlistController extends Controller
                 'email' => $request->email ?? 'unknown'
             ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred. Please try again later.'
-            ], 500);
+            return redirect()->back()
+                ->with('error', 'An error occurred. Please try again later.')
+                ->withInput();
         }
     }
 
     /**
-     * Get waitlist statistics (for admin)
+     * Show success page after waitlist signup
      */
-    public function stats()
+    public function success(Request $request)
     {
-        try {
-            $stats = [
-                'total' => Waitlist::count(),
-                'today' => Waitlist::today()->count(),
-                'this_week' => Waitlist::thisWeek()->count(),
-                'this_month' => Waitlist::whereMonth('created_at', now()->month)->count(),
-                
-                // Top courses
-                'top_courses' => Waitlist::whereNotNull('preferred_course')
-                    ->select('preferred_course', \DB::raw('count(*) as total'))
-                    ->groupBy('preferred_course')
-                    ->orderByDesc('total')
-                    ->limit(5)
-                    ->get(),
-                
-                // Top states
-                'top_states' => Waitlist::whereNotNull('state_of_origin')
-                    ->select('state_of_origin', \DB::raw('count(*) as total'))
-                    ->groupBy('state_of_origin')
-                    ->orderByDesc('total')
-                    ->limit(5)
-                    ->get(),
-                
-                // Device breakdown
-                'devices' => [
-                    'mobile' => Waitlist::where('is_mobile', true)->count(),
-                    'desktop' => Waitlist::where('is_desktop', true)->count(),
-                    'tablet' => Waitlist::where('is_tablet', true)->count()
-                ],
-                
-                // JAMB score distribution
-                'jamb_scores' => Waitlist::whereNotNull('jamb_score_range')
-                    ->select('jamb_score_range', \DB::raw('count(*) as total'))
-                    ->groupBy('jamb_score_range')
-                    ->orderBy('jamb_score_range')
-                    ->get()
-            ];
+        $name = $request->get('name');
+        $email = $request->get('email');
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Could not fetch statistics'
-            ], 500);
+        // If no data in URL, check session as fallback
+        if (!$name || !$email) {
+            $name = session('waitlist_data.name');
+            $email = session('waitlist_data.email');
         }
+
+        // If still no data, redirect to home
+        if (!$name || !$email) {
+            return redirect()->route('home');
+        }
+
+        return view('success', compact('name', 'email'));
     }
 
     /**
-     * Check if email exists
+     * Check if email exists (for AJAX validation)
      */
     public function checkEmail(Request $request)
     {
         $exists = Waitlist::where('email', $request->email)->exists();
         
-        return response()->json([
-            'exists' => $exists
-        ]);
+        if ($request->ajax()) {
+            return response()->json(['exists' => $exists]);
+        }
+        
+        return redirect()->back()->with('email_exists', $exists);
     }
 }
