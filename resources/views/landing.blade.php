@@ -457,8 +457,7 @@
               </select>
             </div>
             <div>
-              <label for="state">State of Origin <span class="opt">(optional)</span></label>
-             <div class="field-group">
+     
     <div>
         <label for="state">State of Origin <span class="opt">(optional)</span></label>
         <select id="state">
